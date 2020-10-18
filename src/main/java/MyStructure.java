@@ -1,6 +1,5 @@
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public class MyStructure implements IMyStructure {
     private List<INode> nodes;
@@ -14,7 +13,7 @@ public class MyStructure implements IMyStructure {
         if (code == null) {
             throw new IllegalArgumentException("Renderer is null!");
         }
-        return nodes.stream().filter(n -> n.getCode().equals(code)).findFirst();
+        return findByVariableAndValue("code", code);
     }
 
     @Override
@@ -22,8 +21,20 @@ public class MyStructure implements IMyStructure {
         if (renderer == null) {
             throw new IllegalArgumentException("Renderer is null!");
         }
-        return nodes.stream().filter(n -> n.getRenderer().equals(renderer)).findFirst();
+        return findByVariableAndValue("renderer", renderer);
     }
+
+
+    public Optional<INode> findByVariableAndValue(String variable, String value) {
+        if (variable == null || value == null) {
+            throw new IllegalArgumentException("In parameters are null!");
+        }
+        if (variable.equals("renderer")) {
+            return nodes.stream().filter(n -> n.getRenderer().equals(value)).findFirst();
+        } else
+            return nodes.stream().filter(n -> n.getCode().equals(value)).findFirst();
+    }
+
 
     @Override
     public int count() {
