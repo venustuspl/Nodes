@@ -1,5 +1,5 @@
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Predicate;
 
 public class MyStructure implements IMyStructure {
     private List<INode> nodes;
@@ -9,30 +9,27 @@ public class MyStructure implements IMyStructure {
     }
 
     @Override
-    public Optional<INode> findByCode(String code) {
+    public INode findByCode(String code) {
         if (code == null) {
             throw new IllegalArgumentException("Renderer is null!");
         }
-        return findByVariableAndValue("code", code);
+        return findByInterfacePredicate(n -> code.equals(n.getCode()));
     }
 
     @Override
-    public Optional<INode> findByRenderer(String renderer) {
+    public INode findByRenderer(String renderer) {
         if (renderer == null) {
             throw new IllegalArgumentException("Renderer is null!");
         }
-        return findByVariableAndValue("renderer", renderer);
+        return findByInterfacePredicate(n -> renderer.equals(n.getRenderer()));
     }
 
 
-    public Optional<INode> findByVariableAndValue(String variable, String value) {
-        if (variable == null || value == null) {
-            throw new IllegalArgumentException("In parameters are null!");
-        }
-        if (variable.equals("renderer")) {
-            return nodes.stream().filter(n -> n.getRenderer().equals(value)).findFirst();
-        } else
-            return nodes.stream().filter(n -> n.getCode().equals(value)).findFirst();
+    public INode findByInterfacePredicate(Predicate<INode> predicate) {
+        return nodes.stream()
+                .filter(predicate)
+                .findFirst()
+                .orElse(null);
     }
 
 
