@@ -39,11 +39,4 @@ public class MyStructure implements IMyStructure {
 
     }
 
-    public List<INode> getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(List<INode> nodes) {
-        this.nodes = nodes;
-    }
 }
