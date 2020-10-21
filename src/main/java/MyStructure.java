@@ -1,8 +1,9 @@
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class MyStructure implements IMyStructure {
-    private List<INode> nodes;
+    private final List<INode> nodes;
 
     public MyStructure(List<INode> nodes) {
         this.nodes = nodes;
@@ -27,6 +28,7 @@ public class MyStructure implements IMyStructure {
 
     public INode findByInterfacePredicate(Predicate<INode> predicate) {
         return nodes.stream()
+                .flatMap(INode::toStream)
                 .filter(predicate)
                 .findFirst()
                 .orElse(null);
@@ -35,8 +37,20 @@ public class MyStructure implements IMyStructure {
 
     @Override
     public int count() {
-        return (int) nodes.stream().count();
+        return (int) nodes.stream().flatMap(INode::toStream).count();
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MyStructure that = (MyStructure) o;
+        return Objects.equals(nodes, that.nodes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nodes);
+    }
 }

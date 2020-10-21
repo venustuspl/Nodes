@@ -7,4 +7,5 @@ public interface IMyStructure {
 
     // zwraca liczbę węzłów
     int count();
+
 }

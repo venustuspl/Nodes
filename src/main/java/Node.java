@@ -1,4 +1,5 @@
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class Node implements INode {
     private final String code;
@@ -18,7 +19,6 @@ public class Node implements INode {
     public String getRenderer() {
         return renderer;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -40,5 +40,10 @@ public class Node implements INode {
                 "code='" + code + '\'' +
                 ", renderer='" + renderer + '\'' +
                 '}';
+    }
+
+    @Override
+    public Stream<INode> toStream() {
+        return Stream.of(this);
     }
 }
